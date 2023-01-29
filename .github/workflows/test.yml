@@ -1,4 +1,4 @@
-name: Rodar Testes
+name: Run tests
 
 on:
   push:

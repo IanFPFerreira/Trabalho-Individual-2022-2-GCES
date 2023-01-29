@@ -1,0 +1,45 @@
+name: Build documentation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.REPO_TOKEN }}
+      
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.9"
+
+    - name: Install docs requirements
+      run: |
+        pip install -r docs/sphinx/docs_requirements.txt
+
+    - name: Run docs sphinx
+      run: |
+        cd docs/sphinx/
+        sphinx-apidoc -f -o . ../../src/
+        make html
+
+    - name: Modifica version
+      run: |
+        git config --local user.email "ianfillipe@gmail.com"
+        git config --local user.name "IanFPFerreira"
+
+    - name: Commit in branch gh-pages
+      run: |
+        git switch -c gh-pages
+        mv docs/sphinx/_build/html/* docs/
+        git add docs/*
+        git commit -m "Build new Docs gh-pages"
+        git push origin gh-pages -f
