@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "2022-2-gces-ifpf"
-version = "0.1.0"
+version = "0.2.0"
 description = ""
 authors = ["IanFPFerreira <ianfillipe@gmail.com>"]
 readme = "README.md"
